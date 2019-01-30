@@ -1,4 +1,4 @@
-node(label)  {
+node()  {
     stage('Checkout') {
         checkout scm
     }
