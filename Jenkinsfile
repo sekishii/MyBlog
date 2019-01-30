@@ -1,13 +1,14 @@
 pipeline  {
     agent {
          docker {
-            image 'maven:3.5.3-jdk-8-alpine'
+            image 'maven:3-alpine'
+            args '-v $HOME/.m2:/root/.m2'
         }
     }
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '5fb7fe9f-0a24-43c5-b450-ce43dfb18fe7', url: 'https://github.com/sekishii/MyBlog.git']]])
+                checkout scm
             }
         }
         stage('Build') {
