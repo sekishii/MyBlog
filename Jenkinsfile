@@ -1,13 +1,9 @@
 def label = "jenkins-slave-it-${UUID.randomUUID().toString()}"
 podTemplate(label: label,
 containers: [
-  containerTemplate(name: 'maven', image: 'maven:3.5.3-jdk-8-alpine', command: 'cat', ttyEnabled: true),
-  containerTemplate(name: 'kubectl', image: 'leadingsoft/k8s-kubectl', command: 'cat', ttyEnabled: true),
-  containerTemplate(name: 'curl', image: 'appropriate/curl', command: 'cat', ttyEnabled: true)
+  containerTemplate(name: 'maven', image: 'maven:3.5.3-jdk-8-alpine', command: 'cat', ttyEnabled: true)
 ],
 volumes: [
-  configMapVolume(mountPath: '/home/jenkins/.kube', configMapName: 'kube-config'),
-  hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
   configMapVolume(mountPath: '/usr/share/maven/conf-user', configMapName: 'maven-settings')
 ]) {
     node(label)  {
