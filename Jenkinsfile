@@ -1,12 +1,12 @@
-node()  {
+node {
     stage('Checkout') {
         checkout scm
     }
     stage('Build') {
-        echo 'build'
-        docker.image('maven:3.5.3-jdk-8-alpine').inside('-v $HOME/.m2:/root/.m2') {
-            echo 'test'
-        }
+       echo 'build'
+       withMaven (maven: 'M3')mavenLocalRepo: '.repository') {
+            sh "mvn clean install -Dmaven.test.skip=true"
+       }
     }
     stage('Test') {
         echo 'test'
