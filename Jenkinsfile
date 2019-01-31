@@ -4,7 +4,7 @@ node {
     }
     stage('Build') {
        echo 'build'
-       withMaven (maven: 'M3')mavenLocalRepo: '.repository') {
+       withMaven (maven: 'M3', mavenLocalRepo: '.repository') {
             sh "mvn clean install -Dmaven.test.skip=true"
        }
     }
