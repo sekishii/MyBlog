@@ -10,7 +10,6 @@ node {
     }
     stage('Test') {
         echo 'test'
-        junit 'target/surefire-reports/*.xml'
     }
     stage('Deploy') {
         echo 'deploy'
