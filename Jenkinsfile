@@ -15,7 +15,7 @@ node {
         echo 'deploy'
         // This step should not normally be used in your script. Consult the inline help for details.
         withDockerContainer('docker:latest') {
-            sh 'mvn clean package docker:build'
+            sh 'mvn clean package -DskipTests=true docker:build'
         }
     }
 }
