@@ -1,10 +1,24 @@
-FROM jenkins:latest
+FROM openjdk:8-jdk-alpine
 
-USER root
-RUN curl -O https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz \
-&& tar zxvf docker-latest.tgz \
-&& cp docker/docker /usr/local/bin/ \
-&& rm -rf docker docker-latest.tgz
+VOLUME /apps
 
-ARG DOCKER_GID=999
-USER jenkins:${DOCKER_GID}
+ARG JAR_FILE
+ADD ${JAR_FILE} /apps/myblog.jar
+
+RUN mkdir -p /apps && \
+    mkdir -p /var/log/MyBlog && \
+    groupadd -g 999 sekishii && \
+    useradd -r -u 999 -g sekishii sekishii && \
+    chown -R sekishii. /var/log/MyBlog
+
+ENV SPRING_CONFIG_LOCATION classpath:/
+ENV SPRING_PROFILE default
+ENV JAVA_OPTS -Xmx1024m
+
+ENV DD_SERVICE_NAME=MyBlog \
+    DD_AGENT_HOST=localhost \
+    DD_AGENT_PORT=8126 \
+    AGENT_ENABLE=false
+
+
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.config.location=${SPRING_CONFIG_LOCATION}","-Dspring.profiles.active=${SPRING_PROFILE}","-jar","/myblog.jar"]

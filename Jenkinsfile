@@ -10,8 +10,12 @@ node {
     }
     stage('Test') {
         echo 'test'
+        junit 'target/surefire-reports/*.xml'
     }
     stage('Deploy') {
         echo 'deploy'
+        withMaven (maven: 'M3', mavenLocalRepo: '.repository') {
+            sh 'mvn clean package docker:build'
+        }
     }
 }
