@@ -15,7 +15,7 @@ node {
         echo 'deploy'
         // This step should not normally be used in your script. Consult the inline help for details.
         withDockerContainer('docker:latest') {
-            sh -c 'mvn -s /usr/share/maven/conf-user/settings.xml -DskipTests=true docker:build -Ddocker.tag=latest'
+            sh 'mvn -s /usr/share/maven/conf-user/settings.xml -DskipTests=true docker:build -Ddocker.tag=latest'
         }
     }
 }
