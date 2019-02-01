@@ -13,7 +13,8 @@ node {
     }
     stage('Deploy') {
         echo 'deploy'
-        withMaven (maven: 'M3', mavenLocalRepo: '.repository') {
+        // This step should not normally be used in your script. Consult the inline help for details.
+        withDockerContainer('docker:latest') {
             sh 'mvn clean package docker:build'
         }
     }
